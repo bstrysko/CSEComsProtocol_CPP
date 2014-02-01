@@ -4,7 +4,7 @@
 
 #define SEND_ACKNOWLEDGE_BUFFER_SIZE 2
 #define SEND_GRID_BUFFER_SIZE \
-	(2 + CSE_GRID_NUM_CELLS + 1)
+	(2 + CSE_GRID_NUM_CELLS)
 
 CSEComsClient::CSEComsClient()
 {
@@ -64,8 +64,6 @@ void CSEComsClient::sendGridState(uint8_t numCellsDetected, uint8_t numCellsDefe
 	buffer[1] = numCellsDefect;
 	
 	memcpy(&buffer[2], grid, CSE_GRID_NUM_CELLS);
-
-	buffer[SEND_GRID_BUFFER_SIZE-1] = -1;
 
 	send(buffer, SEND_GRID_BUFFER_SIZE);
 }
