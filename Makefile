@@ -25,10 +25,10 @@ LDFLAGS = -g
  
 all: build
 
-build: $(OUT)
+build: $(LIBNAME)
  
-$(OUT): $(OBJ)
-	$(CCC) -shared -Wl,-soname,$(OUT) -o $(REALNAME) $(OBJ) 
+$(LIBNAME): $(OBJ)
+	$(CCC) -shared -Wl,-soname,$(REALNAME) -o $(LIBNAME) $(OBJ)
 
 .cpp.o:
 	$(CCC) $(INCLUDES) $(CCFLAGS) -c $< -o $@ 
@@ -36,7 +36,7 @@ $(OUT): $(OBJ)
 install: build
 	mkdir -p /usr/include/$(LNAME)/
 	cp include/* /usr/include/$(LNAME)/
-	cp $(REALNAME) /usr/lib/
+	cp $(LIBNAME) /usr/lib/$(REALNAME)
 	ln -sf /usr/lib/$(REALNAME) /usr/lib/$(LIBNAME)
 
 clean:
