@@ -20,3 +20,6 @@ $(LINK_TARGET) : $(OBJS)
 
 %.o : %.cpp
 	g++ $(CFLAGS) -g -o $@ -c $< $(LIBS)
+
+test_server:
+	nc -u -l 1234 | hexdump -C -v

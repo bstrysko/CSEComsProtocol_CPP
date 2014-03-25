@@ -56,11 +56,17 @@ void CSEComsClient::detectCell(CSECellCoordinate c, CSECellStatus status)
 	if(cellStatus[row][col] == UNEXPLORED)
 	{
 		numCellsDetected++;
+	}
 
-		if(status == DEFECT)
-		{
-			numCellsDefect++;
-		}
+	// Now see defect and previously not a defect
+	if((status == DEFECT) && (cellStatus[row][col] != DEFECT))
+	{
+		numCellsDefect++;
+	}
+	// Now see non-defect and previously a defect
+	else if((status == NON_DEFECT) && (cellStatus[row][col] == DEFECT))
+	{
+		numCellsDefect--;
 	}
 
 	uint8_t statusByte = (uint8_t)status;

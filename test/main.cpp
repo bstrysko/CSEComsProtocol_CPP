@@ -33,6 +33,10 @@ int main(int argc, char* argv[])
 	cout << client << endl;	
 	client.detectCell(CSECellCoordinate(8,8), DEFECT);
 	cout << client << endl;
+	client.detectCell(CSECellCoordinate(3,3), DEFECT);
+	cout << client << endl;
+	client.detectCell(CSECellCoordinate(8,8), NON_DEFECT);
+	cout << client << endl;
 
 	client.flush();
 
