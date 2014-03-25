@@ -9,7 +9,7 @@
 using namespace std;
 
 void usage(string name);
-uint8_t stringToUInt8(char* s);
+int stringToInt(char* s);
 
 int main(int argc, char* argv[])
 {
@@ -19,28 +19,34 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-	CSEComsClient client;
+	string hostname = argv[1];
+	int port = stringToInt(argv[2]);	
+
+	CSEComsClient client(hostname, port);
 
 	cout << client << endl;
-
 	client.detectCell(CSECellCoordinate(0,0), DEFECT);
-	client.detectCell(CSECellCoordinate(0,1), NON_DEFECT);
-
-	client.detectCell(CSECellCoordinate(8,8), NON_DEFECT);
-
 	cout << client << endl;
+	client.detectCell(CSECellCoordinate(0,1), NON_DEFECT);
+	cout << client << endl;
+	client.detectCell(CSECellCoordinate(8,8), NON_DEFECT);
+	cout << client << endl;	
+	client.detectCell(CSECellCoordinate(8,8), DEFECT);
+	cout << client << endl;
+
+	client.flush();
 
 	return 0;
 }
 
 void usage(string name)
 {
-	cout << "usage: " << name << "" << endl;
+	cout << "usage: ./" << name << " [hostname] [port]" << endl;
 }
 
-uint8_t stringToUInt8(char* s)
+int stringToInt(char* s)
 {
-	uint8_t result;
+	int result;
 	
 	result = atoi(s);
 	

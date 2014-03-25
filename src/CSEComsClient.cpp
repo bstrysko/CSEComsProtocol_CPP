@@ -1,18 +1,35 @@
 #include <CSEComsClient.h>
 
-CSEComsClient::CSEComsClient()
+#define CSE_COMS_CLIENT_BUFFER_SIZE \
+	(2 + CSE_COMS_CLIENT_NUM_CELLS + 1)
+
+CSEComsClient::CSEComsClient(string hostname, uint32_t port)
 {
 	this->numCellsDetected = 0;
 	this->numCellsDefect = 0;
 
 	memset(cellStatus, UNEXPLORED, CSE_COMS_CLIENT_NUM_CELLS);
 
-	//TODO: open port
+	socket_fd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+
+	if(socket_fd == -1)
+	{
+		throw ios_base::failure("Error creating UDP socket");
+	}
+
+	bzero(&server_address, sizeof(server_address));
+	server_address.sin_family = AF_INET;
+	server_address.sin_port = htons(port);
+
+    if(!inet_aton(hostname.c_str(), &server_address.sin_addr)) 
+	{
+		throw ios_base::failure("inet_aton error");
+	}
 }
 
 CSEComsClient::~CSEComsClient()
 {
-	//TODO: close port
+	close(socket_fd);
 }
 
 void CSEComsClient::detectCell(CSECellCoordinate c, CSECellStatus status)
@@ -28,6 +45,11 @@ void CSEComsClient::detectCell(CSECellCoordinate c, CSECellStatus status)
 		o << "(" << (int)c.first << ", " << (int)c.second << ")";
 		o << " is invalid";
 		throw ios_base::failure(o.str());
+	}
+
+	if(status == UNEXPLORED)
+	{
+		throw ios_base::failure("Cannot unexplore a cell");
 	}
 
 	// Not a re-pass
@@ -47,7 +69,20 @@ void CSEComsClient::detectCell(CSECellCoordinate c, CSECellStatus status)
 
 void CSEComsClient::flush()
 {
-	//TODO:
+	uint8_t buffer[CSE_COMS_CLIENT_BUFFER_SIZE];
+	buffer[0] = numCellsDetected;
+	buffer[1] = numCellsDefect;
+	
+	memcpy(&buffer[2], cellStatus, CSE_COMS_CLIENT_NUM_CELLS);
+
+	buffer[CSE_COMS_CLIENT_BUFFER_SIZE-1] = -1;
+
+	int r = sendto(socket_fd, buffer, CSE_COMS_CLIENT_BUFFER_SIZE, 0, (struct sockaddr *)&server_address,sizeof(server_address));
+
+	if(r == -1)
+	{
+		throw ios_base::failure("sendto failed");
+	}
 }
 
 ostream& operator<<(ostream& os, const CSEComsClient& rhs)

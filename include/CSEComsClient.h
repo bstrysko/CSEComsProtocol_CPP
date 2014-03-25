@@ -8,6 +8,11 @@
 #include <stdint.h>
 #include <cstring>
 
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <unistd.h>
+#include <arpa/inet.h>
+
 using namespace std;
 
 #define CSE_COMS_CLIENT_NUM_CELLS_PER_ROW 9
@@ -28,11 +33,14 @@ enum CSECellStatus
 class CSEComsClient
 {
   private:
+    int socket_fd;
+    struct sockaddr_in server_address;
+    
     uint8_t numCellsDetected;
     uint8_t numCellsDefect;
     uint8_t cellStatus[CSE_COMS_CLIENT_NUM_CELLS_PER_ROW][CSE_COMS_CLIENT_NUM_CELLS_PER_COL];
   public:
-    CSEComsClient();
+    CSEComsClient(string hostname, uint32_t port);
     ~CSEComsClient();
 
     void detectCell(CSECellCoordinate c, CSECellStatus status);
