@@ -148,5 +148,6 @@ ostream& operator<<(ostream& os, const CSEComsClient& rhs)
 	}
 
 	os << "]" << endl;
+	return os;
 }
 
