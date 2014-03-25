@@ -26,6 +26,8 @@ int main(int argc, char* argv[])
 	client.detectCell(CSECellCoordinate(0,0), DEFECT);
 	client.detectCell(CSECellCoordinate(0,1), NON_DEFECT);
 
+	client.detectCell(CSECellCoordinate(8,8), NON_DEFECT);
+
 	cout << client << endl;
 
 	return 0;

@@ -2,6 +2,7 @@
 #define _CSE_COMS_PROTOCOL_CSE_COMS_CLIENT_H_
 
 #include <iostream>
+#include <sstream>
 #include <utility>
 
 #include <stdint.h>

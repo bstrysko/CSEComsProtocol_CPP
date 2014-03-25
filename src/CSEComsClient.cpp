@@ -19,6 +19,28 @@ void CSEComsClient::detectCell(CSECellCoordinate c, CSECellStatus status)
 {
 	uint8_t row = c.first;
 	uint8_t col = c.second;
+
+	if((row >= CSE_COMS_CLIENT_NUM_CELLS_PER_COL)
+		|| (col >= CSE_COMS_CLIENT_NUM_CELLS_PER_ROW))
+	{
+		stringstream o;
+		o << "CSECellCoordinate ";
+		o << "(" << (int)c.first << ", " << (int)c.second << ")";
+		o << " is invalid";
+		throw ios_base::failure(o.str());
+	}
+
+	// Not a re-pass
+	if(cellStatus[row][col] == UNEXPLORED)
+	{
+		numCellsDetected++;
+
+		if(status == DEFECT)
+		{
+			numCellsDefect++;
+		}
+	}
+
 	uint8_t statusByte = (uint8_t)status;
 	cellStatus[row][col] = statusByte;
 }
