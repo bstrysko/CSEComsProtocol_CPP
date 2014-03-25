@@ -33,10 +33,26 @@ ostream& operator<<(ostream& os, const CSEComsClient& rhs)
 	os << "[Num Cells Detected: " << (size_t)rhs.numCellsDetected << ",";
 	os << " Num Cells Defect: " << (size_t)rhs.numCellsDefect << "]" << endl;
 	os << "[Cell Status: " << endl;
+
+	os << "\t    ";
+	
+	for(uint8_t i = 0; i < CSE_COMS_CLIENT_NUM_CELLS_PER_ROW; i++)
+	{
+		os << (int)i << " ";
+	}
+	
+	os << endl << "\t    ";
+
+	for(uint8_t i = 0; i < CSE_COMS_CLIENT_NUM_CELLS_PER_ROW; i++)
+	{
+		os << "--";
+	}
+
+	os << endl;
 	
 	for(uint8_t y = 0; y < CSE_COMS_CLIENT_NUM_CELLS_PER_COL; y++)
 	{
-		os << "\t";
+		os << "\t" << (int)y << " | ";
 
 		for(uint8_t x = 0; x < CSE_COMS_CLIENT_NUM_CELLS_PER_ROW; x++)
 		{

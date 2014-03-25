@@ -3,8 +3,8 @@ LINK_TARGET = test
 OBJS =  \
 	main.o
 
-CFLAGS = -Iinclude/ -I../include/
-LIBS = -L ../ -l CSEComsProtocol
+CFLAGS = -Iinclude/ -I/usr/include/
+LIBS = -l CSEComsProtocol
 
 REBUILDABLES = $(OBJS) $(LINK_TARGET)
 
