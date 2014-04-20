@@ -2,7 +2,9 @@ LNAME = CSEComsProtocol
 
 # Source Files
 SRC = \
-	src/CSEComsClient.cpp
+	src/CSEComsClient.cpp \
+	src/CSEComsServer.cpp \
+	src/CSEComs.cpp
 
 OBJ = $(SRC:.cpp=.o)
 LIBNAME = lib$(LNAME).so
@@ -28,7 +30,7 @@ all: build
 build: $(LIBNAME)
  
 $(LIBNAME): $(OBJ)
-	$(CCC) -shared -Wl,-soname,$(REALNAME) -o $(LIBNAME) $(OBJ)
+	$(CCC) -shared -Wl,-soname,$(REALNAME) -o $(LIBNAME) $(OBJ) $(LIBS)
 
 .cpp.o:
 	$(CCC) $(INCLUDES) $(CCFLAGS) -c $< -o $@ 

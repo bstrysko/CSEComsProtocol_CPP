@@ -3,63 +3,52 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <unistd.h>
 
-#include <CSEComsProtocol/CSEComsClient.h>
+#include <CSEComsProtocol/CSEComs.h>
 
 using namespace std;
 
 void usage(string name);
-int stringToInt(char* s);
 
 int main(int argc, char* argv[])
 {
-	if(argc < 3)
+	if(argc < 2)
 	{
 		usage(argv[0]);
 		return 1;
 	}
 
 	string hostname = argv[1];
-	int port = stringToInt(argv[2]);	
 
-	CSEComsClient client(hostname, port);
+	CSEComs coms(hostname);
 
-	cout << client << endl;
-	client.detectCell(CSECellCoordinate(0,0), DEFECT);
-	cout << client << endl;
-	client.detectCell(CSECellCoordinate(0,1), NON_DEFECT);
-	cout << client << endl;
-	client.detectCell(CSECellCoordinate(8,8), NON_DEFECT);
-	cout << client << endl;	
-	client.detectCell(CSECellCoordinate(8,8), DEFECT);
-	cout << client << endl;
-	client.detectCell(CSECellCoordinate(3,3), DEFECT);
-	cout << client << endl;
-	client.detectCell(CSECellCoordinate(8,8), NON_DEFECT);
-	cout << client << endl;
+	while(!coms.isStarted())
+	{
+		cout << "Waiting for start..." << endl;
+		usleep(1000000);
+	}
 
-	client.flush();
+	cout << coms << endl;
+	coms.detectCell(CSECellCoordinate(0,0), DEFECT);
+	cout << coms << endl;
+	coms.detectCell(CSECellCoordinate(0,1), NON_DEFECT);
+	cout << coms << endl;
+	coms.detectCell(CSECellCoordinate(8,8), NON_DEFECT);
+	cout << coms << endl;	
+	coms.detectCell(CSECellCoordinate(8,8), DEFECT);
+	cout << coms << endl;
+	coms.detectCell(CSECellCoordinate(3,3), DEFECT);
+	cout << coms << endl;
+	coms.detectCell(CSECellCoordinate(8,8), NON_DEFECT);
+	cout << coms << endl;
+
+	coms.flush();
 
 	return 0;
 }
 
 void usage(string name)
 {
-	cout << "usage: ./" << name << " [hostname] [port]" << endl;
-}
-
-int stringToInt(char* s)
-{
-	int result;
-	
-	result = atoi(s);
-	
-	if(result == 0 && s[0] != '0')
-	{
-		stringstream o;
-		o << s << " is not a number";		
-		throw ios_base::failure(o.str());
-	}
-
-	return result;
+	cout << "usage: ./" << name << " [hostname]" << endl;
 }
