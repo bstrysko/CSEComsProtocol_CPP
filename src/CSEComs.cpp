@@ -125,9 +125,14 @@ ostream& operator<<(ostream& os, const CSEComs& rhs)
 					s = 'X';
 					break;
 				}
-				default:
+				case UNEXPLORED:
 				{
 					s = '?';
+					break;
+				}
+				default:
+				{
+					s = '}';
 				}
 			}
 

@@ -73,7 +73,12 @@ void CSEComsServer::checkForTriggerPacket()
 	{
 		if(buffer[0] != 0xFF)
 		{
-			throw ios_base::failure("Error 1st byte of Trigger Packet not 0xFF");
+			stringstream s;
+			s << "Error: 1st byte of Trigger Packet 0x";
+			s << hex << (int)buffer[0];
+			s << dec;
+			s << " not 0xFF";
+			throw ios_base::failure(s.str());
 		}
 		else if(buffer[2] != 1)
 		{

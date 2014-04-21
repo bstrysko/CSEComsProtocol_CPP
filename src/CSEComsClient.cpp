@@ -1,11 +1,12 @@
 #include <CSEComsClient.h>
 #include <Shared.h>
+#include <errno.h>
 
 #define SEND_ACKNOWLEDGE_BUFFER_SIZE 2
 #define SEND_GRID_BUFFER_SIZE \
 	(2 + CSE_GRID_NUM_CELLS + 1)
 
-CSEComsClient::CSEComsClient() : CSEComsClient::CSEComsClient("127.0.0.1")
+CSEComsClient::CSEComsClient()
 {
 }
 
@@ -30,7 +31,6 @@ CSEComsClient::CSEComsClient(string hostname)
 
 CSEComsClient::~CSEComsClient()
 {
-	close(socketFd);
 }
 
 void CSEComsClient::send(uint8_t* buffer, size_t bufferSize)
@@ -40,7 +40,11 @@ void CSEComsClient::send(uint8_t* buffer, size_t bufferSize)
 		0, (struct sockaddr *)&serverAddress, sizeof(serverAddress)
 	) == -1)
 	{
-		throw ios_base::failure("sendto failed");
+		stringstream s;
+		s << "Error sendto ( ";
+		s << strerror(errno);
+		s << " )";
+		throw ios_base::failure(s.str());
 	}
 }
 

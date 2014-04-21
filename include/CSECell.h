@@ -7,7 +7,7 @@ using namespace std;
 
 typedef pair<uint8_t, uint8_t> CSECellCoordinate;
 
-enum CSECellStatus
+enum CSECellStatus : uint8_t
 {
   NON_DEFECT = 0,
   DEFECT = 1,

@@ -32,6 +32,7 @@ int main(int argc, char* argv[])
 	cout << coms << endl;
 	coms.detectCell(CSECellCoordinate(0,0), DEFECT);
 	cout << coms << endl;
+	cout << coms << endl;
 	coms.detectCell(CSECellCoordinate(0,1), NON_DEFECT);
 	cout << coms << endl;
 	coms.detectCell(CSECellCoordinate(8,8), NON_DEFECT);

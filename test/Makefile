@@ -21,6 +21,10 @@ $(LINK_TARGET) : $(OBJS)
 %.o : %.cpp
 	g++ $(CFLAGS) -g -o $@ -c $< $(LIBS)
 
-test_computer:
-	echo -e “\xff\xfe\x01” | nc -4u -w1 192.168.1.10 1234
-	sudo tcpdump udp port 1234 -vv -x
+send_start:
+	echo -e “\xff\xfe\x01” | nc -4u -w1 192.168.1.102 1234
+
+test_server:
+	sudo tcpdump udp port 1234 -x
+	#nc -l 1234 | hexdump -C
+
