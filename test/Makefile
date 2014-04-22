@@ -22,9 +22,9 @@ $(LINK_TARGET) : $(OBJS)
 	g++ $(CFLAGS) -g -o $@ -c $< $(LIBS)
 
 send_start:
-	echo -e “\xff\xfe\x01” | nc -4u -w1 192.168.1.102 1234
+	echo -n "FFFE01" | xxd -r -p | nc -4u 192.168.0.10 1234
 
 test_server:
-	sudo tcpdump udp port 1234 -x
-	#nc -l 1234 | hexdump -C
+	#sudo tcpdump udp port 1234 -vv -x
+	nc -l 1234 | hexdump -C
 
